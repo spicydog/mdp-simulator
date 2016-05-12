@@ -34,7 +34,7 @@
       <ui-view layout="column" layout-fill layout-padding>
 
         <div ng-hide="!modeConfig">
-          <md-card class="md-padding" >
+          <md-card class="md-padding">
 
             <md-card-title>
               <md-card-title-text>
@@ -106,22 +106,15 @@
                 </table>
               </div>
 
-              <br />
-              <br />
-
-
               <div layout-padding>
                 <md-card-title>
                   <md-card-title-text>
-                    <span class="md-headline"><i>γ</i></span> =
+                    <span class="md-headline"><i title="Rate of Convergence">γ</i></span> =
                     <input class="cell-50 input-box" type="number" step="0.05" max="1" min="0" ng-model="settings.gamma" />
 
                   </md-card-title-text>
                 </md-card-title>
               </div>
-
-              <br />
-              <br />
 
               <div layout-padding>
                 <md-card-title>
@@ -298,8 +291,11 @@
 
 
         </div>
+        <div style="text-align: center">Written by <a target="_blank" href="//spicydog.org">spicydog</a><br />Open source on <a target="_blank" href="//github.com/spicydog/mdp-simulator/tree/master">GitHub</a></div>
+
 
       </ui-view>
+
     </md-content>
   </section>
 </div>
