@@ -9,6 +9,7 @@ app.config(function($mdThemingProvider) {
 
 app.controller('AppCtrl', function($scope) {
 
+    $scope.showSolution = true;
 
     $scope.modeConfig = true;
 
@@ -31,6 +32,7 @@ app.controller('AppCtrl', function($scope) {
     $scope.size.height = $scope.settings.fieldSize.h;
 
     $scope.solution = '';
+    $scope.displayingSolution = '';
 
     $scope.range = function(min, max, step) {
         step = step || 1;
@@ -167,12 +169,35 @@ app.controller('AppCtrl', function($scope) {
         $scope.stepCount++;
         $scope.mdp.step();
         $scope.refresh();
+
+        var updateSolution = false;
+        if (!$scope.autoRunning) {
+            updateSolution = true;
+        } else {
+            if ($scope.stepCount < 10) {
+                updateSolution = true;
+            } else if ($scope.stepCount < 100) {
+                if ($scope.stepCount % 10 == 0) {
+                    updateSolution = true;
+                }
+            } else {
+                if ($scope.stepCount % 100 == 0) {
+                    updateSolution = true;
+                }
+            }
+        }
+        if (updateSolution) {
+            if ($scope.showSolution) {
+                $scope.displayingSolution = $scope.solution;
+            }
+        }
     };
 
     $scope.autoRunning = false;
     $scope.auto = function() {
         $scope.autoRunning = !$scope.autoRunning;
         $scope.autoRun();
+        $scope.displayingSolution = $scope.solution;
     };
 
     $scope.autoRun = function() {
