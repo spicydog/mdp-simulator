@@ -1,0 +1,115 @@
+md-content.md-default-theme {
+  background-color: #eee;
+}
+
+md-card {
+  background-color: #fff;
+}
+md-card h2:first-of-type {
+  margin-top: 0;
+}
+
+md-toolbar .md-button.md-default-theme {
+  border-radius: 99%;
+}
+
+h2 {
+  font-weight: 400;
+}
+
+.md-toolbar-tools-bottom {
+  font-size: small;
+}
+.md-toolbar-tools-bottom :last-child {
+  opacity: 0.8;
+}
+
+md-toolbar:not(.md-hue-1),
+.md-fab {
+  fill: #fff;
+}
+
+md-sidenav {
+  fill: #737373;
+}
+md-sidenav ng-md-icon {
+  position: relative;
+  top: 5px;
+}
+
+.user-avatar {
+  border-radius: 99%;
+}
+
+
+
+.radioButtondemoMultiColumn div.radioDemo2 {
+  margin-bottom: 20px; }
+.radioButtondemoMultiColumn h2 {
+  margin-left: 15px; }
+.radioButtondemoMultiColumn p {
+  width: 400px;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding-top: 10px;
+  border-top: 2px solid #ddd; }
+.radioButtondemoMultiColumn .md-checked {
+  background-color: #ECFAFB;
+  border-radius: 2px; }
+.radioButtondemoMultiColumn md-button.md-raised, .radioButtondemoMultiColumn button.md-raised {
+  width: 200px; }
+.radioButtondemoMultiColumn .row {
+  border-bottom: 1px dashed #ddd; }
+.radioButtondemoMultiColumn div.row:last-child {
+  border-bottom: 0px dashed #ddd; }
+.radioButtondemoMultiColumn .summary {
+  width: 100%;
+  padding-top: 10px;
+  margin-left: 25px;
+  margin-top: 20px;
+  margin-bottom: -5px; }
+.radioButtondemoMultiColumn .title {
+  font-weight: bolder; }
+.radioButtondemoMultiColumn .selectedUser .md-checked {
+  padding: 8px;
+  width: 100px; }
+
+
+body, html {
+  height: 100%;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.cell-20 {
+  height: 20px;
+  width: 20px;
+  border: gray 1px solid;
+}
+
+.cell-50 {
+  height: 50px;
+  width: 50px;
+  border: gray 1px solid;
+}
+
+.cell-30 {
+  height: 30px;
+  width: 30px;
+  border: gray 1px solid;
+}
+
+.input-box {
+  border: 0;
+  text-align: center;
+  vertical-align: middle;
+  background-color: transparent;
+}
+
+textarea {
+  border:1px solid #999999;
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}

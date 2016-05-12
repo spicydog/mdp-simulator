@@ -1,0 +1,325 @@
+<!--suppress HtmlUnknownTag, HtmlUnknownAttribute, HtmlFormInputWithoutLabel -->
+<html lang="en" ng-app="MDP">
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>MDP Simulator</title>
+  <meta name="author" content="Spicydog Proxy" />
+
+  <meta name="viewport" content="initial-scale=1" />
+  <link rel="shortcut icon" href="asset/img/icon.png">
+
+  <link rel="stylesheet" href="asset/css/angular-material.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+  <link rel="stylesheet" href="asset/css/main.css">
+
+</head>
+
+<body layout="row" ng-controller="AppCtrl">
+<div layout="column" class="relative" layout-fill role="main">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <div>
+        <h3>
+          Markov Decision Process (MDP) Simulator
+        </h3>
+      </div>
+    </div>
+  </md-toolbar>
+
+  <section layout="row" flex>
+
+    <md-content flex md-scroll-y>
+      <ui-view layout="column" layout-fill layout-padding>
+
+        <div ng-hide="!modeConfig">
+          <md-card class="md-padding" >
+
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline">Configuration</span>
+              </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content>
+
+              <ui-view layout="row" layout-padding>
+
+              <div flex>
+                <div>
+                  <md-card-title>
+                    <md-card-title-text>
+                      <span class="md-headline">Width</span>
+                    </md-card-title-text>
+                  </md-card-title>
+                </div>
+
+                <md-slider-container>
+                  <md-slider md-discrete flex min="2" max="36" ng-model="size.width"  aria-label="width" id="width-slider">
+                  </md-slider>
+                </md-slider-container>
+              </div>
+
+
+              <div flex>
+                <div>
+                  <md-card-title>
+                    <md-card-title-text>
+                      <span class="md-headline">Height</span>
+                    </md-card-title-text>
+                  </md-card-title>
+                </div>
+
+                <md-slider-container>
+                  <md-slider md-discrete flex min="2" max="36" ng-model="size.height" aria-label="height" id="height-slider">
+                  </md-slider>
+                </md-slider-container>
+              </div>
+
+              </ui-view>
+
+              <div layout-padding>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">Field</span>
+                  </md-card-title-text>
+                </md-card-title>
+              </div>
+
+              <div layout-padding>
+                <table>
+                  <tr>
+                    <th class="cell-30" ng-repeat="j in range(0,size.width)">
+                      {{ j }}
+                    </th>
+                  </tr>
+                  <tr ng-repeat="i in range(1,size.height)">
+                    <th class="cell-30">
+                      {{ i }}
+                    </th>
+                    <td class="cell-30" ng-repeat="j in range(1,size.width)"
+                        style="text-align:center; background-color:{{ settingBgColor(i-1, j-1) }}; cursor:pointer;"
+                        ng-click="toggleField(i-1, j-1)">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <br />
+              <br />
+
+
+              <div layout-padding>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline"><i>γ</i></span> =
+                    <input class="cell-50 input-box" type="number" step="0.05" max="1" min="0" ng-model="settings.gamma" />
+
+                  </md-card-title-text>
+                </md-card-title>
+              </div>
+
+              <br />
+              <br />
+
+              <div layout-padding>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">Uncertainty</span>
+                  </md-card-title-text>
+                </md-card-title>
+              </div>
+
+              <div layout-padding>
+                <table>
+                  <tr>
+                    <th class="cell-50" ng-repeat="j in range(0,4)" layout-padding>
+                      {{ uncertaintyNames[j] }}
+                    </th>
+                  </tr>
+                  <tr ng-repeat="i in range(1,4)">
+                    <th class="cell-50" layout-padding>
+                      {{ uncertaintyNames[i] }}
+                    </th>
+                    <td class="cell-50" ng-repeat="j in range(1,4)" style="text-align:center;" layout-padding>
+                      <input class="cell-50 input-box" type="number" step="0.05" max="1" min="0" ng-model="settings.uncertainty[uncertaintyAttributes[i]][uncertaintyAttributes[j]]" />
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+
+              <br />
+              <br />
+
+              <md-button class="md-raised md-primary" ng-hide="!modeConfig" ng-click="reset(); modeConfig = false" ng-disabled="autoRunning">Ready</md-button>
+            </md-card-content>
+
+          </md-card>
+        </div>
+
+
+        <div ng-hide="modeConfig">
+
+          <md-card class="md-padding">
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline">Controller</span>
+              </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content>
+
+              <md-button class="md-raised md-warn" ng-hide="modeConfig" ng-click="reset(); modeConfig = true" ng-disabled="autoRunning">Reset</md-button>
+
+
+              <br />
+              <br />
+
+              <div>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">Auto Play Speed</span>
+                  </md-card-title-text>
+                </md-card-title>
+
+                <md-slider-container>
+                  <md-slider flex min="0" max="490" ng-model="delay" aria-label="delay" id="interval-slider">
+                  </md-slider>
+                </md-slider-container>
+              </div>
+
+              <br />
+
+              <div>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">Step {{ stepCount }}</span>
+                  </md-card-title-text>
+                </md-card-title>
+              </div>
+
+              <div>
+                <md-button class="md-fab md-primary" ng-hide="modeConfig" ng-click="step()" ng-disabled="mdp==null || autoRunning">►❙</md-button>
+                <md-button class="md-fab md-warn  md-hue-2" ng-click="auto()" ng-disabled="mdp==null">{{ autoRunning ? '❚❚' : '►' }}</md-button>
+              </div>
+
+
+            </md-card-content>
+          </md-card>
+
+
+          <md-card>
+            <md-card-content>
+
+              <div layout-padding>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">π (Action)</span>
+                  </md-card-title-text>
+                </md-card-title>
+              </div>
+
+              <table>
+
+                <tr>
+                  <th class="cell-50" ng-repeat="j in range(0,size.width)">
+                    {{ j }}
+                  </th>
+                </tr>
+
+                <tr ng-repeat="i in range(1,size.height)">
+                  <th class="cell-50">
+                    {{ i }}
+                  </th>
+                  <td class="cell-50" ng-repeat="j in range(1,size.width)"
+                      style="text-align:center; background-color:{{ bgColor(i-1, j-1) }}; cursor:{{ pointer(i-1, j-1) }}"
+                      ng-click="setCurrentPosition(i-1, j-1)">
+                    {{ policy[i-1][j-1] }}
+                  </td>
+                </tr>
+
+              </table>
+
+            </md-card-content>
+          </md-card>
+
+          <md-card>
+            <md-card-content>
+
+              <div layout-padding>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">Utility</span>
+                  </md-card-title-text>
+                </md-card-title>
+              </div>
+
+              <table>
+
+                <tr>
+                  <th class="cell-50" ng-repeat="j in range(0,size.width)">
+                    {{ j }}
+                  </th>
+                </tr>
+
+                <tr ng-repeat="i in range(1,size.height)">
+                  <th class="cell-50">
+                    {{ i }}
+                  </th>
+                  <td class="cell-50" ng-repeat="j in range(1,size.width)"
+                      style="font-size:0.7em; text-align: center; background-color: {{ bgColor(i-1, j-1) }}">
+                    {{ utilities(i-1,j-1) }}
+                  </td>
+                </tr>
+
+              </table>
+            </md-card-content>
+          </md-card>
+
+
+          <md-card>
+            <md-card-content>
+
+              <div layout-padding>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">Solution</span>
+                  </md-card-title-text>
+                </md-card-title>
+              </div>
+
+
+              <textarea ng-model="solution" style="width:100%; height:500px;"></textarea>
+            </md-card-content>
+          </md-card>
+
+
+
+        </div>
+
+      </ui-view>
+    </md-content>
+  </section>
+</div>
+
+<!-- Angular Material Dependencies -->
+<script src="asset/js/angular.min.js"></script>
+<script src="asset/js/angular-animate.min.js"></script>
+<script src="asset/js/angular-aria.min.js"></script>
+<script src="asset/js/angular-material.min.js"></script>
+<script src="asset/js/angular-material-icons.min.js"></script>
+
+
+<!-- Display Config -->
+<script src="asset/js/config.js"></script>
+
+<!-- Angular Controller -->
+<script src="asset/js/controller.js"></script>
+
+<!-- MDP Engine -->
+<script src="asset/js/mdp.js"></script>
+
+</body>
+</html>
