@@ -9,7 +9,7 @@ app.config(function($mdThemingProvider) {
 
 app.controller('AppCtrl', function($scope) {
 
-    $scope.showSolution = true;
+    $scope.showSolution = false;
 
     $scope.modeConfig = true;
 
